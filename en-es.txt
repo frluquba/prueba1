@@ -1,0 +1,479 @@
+en
+es
+2: This article looks at the anatomy and workflow of the average video game from a technical point of view , in terms of how the main loop should run .
+
+2: Este artículo examina la anatomía y el flujo de trabajo de un videojuego promedio desde un punto de vista técnico , en términos de cómo debe ejecutarse el bucle principal .
+
+en
+es
+3: It helps beginners to modern game development understand what is required when building a game and how web standards like JavaScript lend themselves as tools .
+
+3: Ayuda a los principiantes en el desarrollo de videojuegos modernos a entender qué se necesita para crear un juego y cómo los estándares web como JavaScript se prestan a ser herramientas .
+
+en
+es
+4: Experienced game programmers who are new to web development could also benefit , too .
+
+4: Los programadores de juegos experimentados que son nuevos en el desarrollo web también podrían beneficiarse .
+
+en
+es
+5: Present , accept , interpret , calculate , repeat
+
+5: Presentar , aceptar , interpretar , calcular , repetir
+
+en
+es
+6: The goal of every video game is to present the user ( s ) with a situation , accept their input , interpret those signals into actions , and calculate a new situation resulting from those acts .
+
+6: El objetivo de todo videojuego es presentar al usuario o usuarios una situación , aceptar sus entradas , interpretar esas señales en acciones y calcular una nueva situación resultante de esas acciones .
+
+en
+es
+7: Games are constantly looping through these stages , over and over , until some end condition occurs ( such as winning , losing , or exiting to go to bed ) .
+
+7: Los juegos pasan constantemente por estas fases , una y otra vez , hasta que se produce alguna condición final ( como ganar , perder o irse a la cama ) .
+
+en
+es
+8: Not surprisingly , this pattern corresponds to how a game engine is programmed .
+
+8: No es sorprendente que este patrón se corresponda con el modo en que se programa un motor de juego .
+
+en
+es
+9: The specifics depend on the game .
+
+9: Los detalles dependen del juego .
+
+en
+es
+10: Some games drive this cycle by user input .
+
+10: Algunos juegos controlan este ciclo mediante la entrada de datos del usuario .
+
+en
+es
+11: Imagine that you are developing a “ find the differences between these two similar pictures ” -type game .
+
+11: Imagina que estás desarrollando un juego del tipo “ encuentra las diferencias entre estas dos imágenes similares ” .
+
+en
+es
+12: These games present two images to the user ; they accept their click ( or touch ) ; they interpret the input as a success , failure , pause , menu interaction , etc . ; finally , they calculate an updated scene resulting from that input .
+
+12: Estos juegos presentan dos imágenes al usuario ; aceptan su clic ( o toque ) ; interpretan la entrada como un éxito , fracaso , pausa , interacción de menú , etc. ; finalmente , calculan una escena actualizada resultante de esa entrada .
+
+en
+es
+13: The game loop is advanced by the user ’ s input and sleeps until they provide it .
+
+13: El bucle del juego avanza por la entrada del usuario y duerme hasta que éste la proporciona .
+
+en
+es
+14: This is more of a turn-based approach that doesn ’ t demand a constant update every frame , only when the player reacts .
+
+14: Se trata más bien de un enfoque por turnos que no exige una actualización constante en cada fotograma , sino sólo cuando el jugador reacciona .
+
+en
+es
+15: Other games demand control over each of the smallest possible individual timeslices .
+
+15: Otros juegos exigen el control de cada uno de los menores intervalos de tiempo posibles .
+
+en
+es
+16: The same principles as above apply with a slight twist : each frame of animation progresses the cycle and any change in user input is caught at the first available turn .
+
+16: Se aplican los mismos principios anteriores con un ligero giro : cada fotograma de animación hace avanzar el ciclo y cualquier cambio en la entrada del usuario se capta en el primer turno disponible .
+
+en
+es
+17: This once-per-frame model is implemented in something called a main loop .
+
+17: Este modelo de una vez por fotograma se implementa en algo llamado bucle principal .
+
+en
+es
+18: If your game loops based on time then this will be its authority that your simulations will adhere to .
+
+18: Si tu juego hace un bucle basado en el tiempo , entonces esta será la autoridad a la que se adherirán tus simulaciones .
+
+en
+es
+19: But it might not need per-frame control .
+
+19: Pero puede que no necesite control por fotograma .
+
+en
+es
+20: Your game loop might be similar to the find the differences example and base itself on input events .
+
+20: Tu bucle de juego podría ser similar al ejemplo de encuentra las diferencias y basarse en eventos de entrada .
+
+en
+es
+21: It might require both input and simulated time .
+
+21: Podría requerir tanto la entrada como el tiempo simulado .
+
+en
+es
+22: It might even loop based on something else entirely .
+
+22: Incluso podría basarse en algo completamente distinto .
+
+en
+es
+23: Modern JavaScript — as described in the next sections — thankfully makes it easy to develop an efficient , execute-once-per-frame main loop .
+
+23: El JavaScript moderno -como se describe en las siguientes secciones- facilita el desarrollo de un bucle principal eficiente , que se ejecuta una vez por fotograma .
+
+en
+es
+24: Of course , your game will only be as optimized as you make it .
+
+24: Por supuesto , tu juego sólo estará tan optimizado como tú lo hagas .
+
+en
+es
+25: If something looks like it should be attached to a more infrequent event then it is often a good idea to break it out of the main loop ( but not always ) .
+
+25: Si algo parece que debería estar unido a un evento más infrecuente , entonces a menudo es una buena idea sacarlo del bucle principal ( pero no siempre ) .
+
+en
+es
+26: Building a main loop in JavaScript
+
+26: Creación de un bucle principal en JavaScript
+
+en
+es
+27: JavaScript works best with events and callback functions .
+
+27: JavaScript funciona mejor con eventos y funciones callback .
+
+en
+es
+28: Modern browsers strive to call methods right as they are needed and idle ( or do their other tasks ) in the gaps .
+
+28: Los navegadores modernos se esfuerzan por llamar a los métodos justo cuando se necesitan y se quedan inactivos ( o hacen sus otras tareas ) en los huecos .
+
+en
+es
+29: It is an excellent idea to attach your code to the moments that are appropriate for them .
+
+29: Es una excelente idea adjuntar su código a los momentos adecuados para ellos .
+
+en
+es
+30: Think about whether your function really needs to be called on a strict interval of time , every frame , or only after something else happens .
+
+30: Piensa si tu función realmente necesita ser llamada en un intervalo de tiempo estricto , cada frame , o sólo después de que ocurra algo más .
+
+en
+es
+31: Being more specific with the browser about when your function needs to be called allows the browser to optimize when it is called .
+
+31: Ser más específico con el navegador sobre cuando tu función necesita ser llamada permite al navegador optimizar cuando es llamada .
+
+en
+es
+32: Also , it will probably make your job easier .
+
+32: Además , probablemente hará tu trabajo más fácil .
+
+en
+es
+33: Some code needs to be run frame-by-frame so why attach that function to anything other than the browser ’ s redraw schedule ?
+
+33: Algún código necesita ejecutarse fotograma a fotograma , así que ¿ por qué adjuntar esa función a otra cosa que no sea el programa de redibujado del navegador ?
+
+en
+es
+34: On the Web , { { domxref ( “ window.requestAnimationFrame ( ) ” ) } } will be the foundation of most well-programmed per-frame main loops .
+
+34: En la Web , { { domxref ( " window.requestAnimationFrame ( ) " ) } } será la base de la mayoría de los bucles principales por fotograma bien programados .
+
+en
+es
+35: A callback function must be passed in to it when it is called .
+
+35: Se le debe pasar una función callback cuando es llamada .
+
+en
+es
+36: That callback function will be executed at a suitable time before the next repaint .
+
+36: Esa función callback se ejecutará en un momento adecuado antes del siguiente repintado .
+
+en
+es
+37: Here is an example of a simple main loop :
+
+37: He aquí un ejemplo de un bucle principal simple :
+
+en
+es
+40: Whatever your main loop needs to do
+
+40: Lo que tenga que hacer tu bucle principal
+
+en
+es
+42: main ( ) ; / / Start the cycle
+
+42: main ( ) ; / / Iniciar el ciclo
+
+en
+es
+43: Note : In each of the main ( ) methods discussed here , we schedule a new requestAnimationFrame before performing our loop contents .
+
+43: Nota : En cada uno de los métodos main ( ) discutidos aquí , programamos un nuevo requestAnimationFrame antes de realizar el contenido de nuestro bucle .
+
+en
+es
+44: That is not by accident and it is considered best practice .
+
+44: Esto no es accidental y se considera la mejor práctica .
+
+en
+es
+45: Calling the next requestAnimationFrame early ensures the browser receives it on time to plan accordingly even if your current frame misses its VSync window .
+
+45: Llamar al siguiente requestAnimationFrame antes de tiempo asegura que el navegador lo recibe a tiempo para planificar en consecuencia incluso si tu frame actual pierde su ventana VSync .
+
+en
+es
+46: The above chunk of code has two statements .
+
+46: El fragmento de código anterior tiene dos sentencias .
+
+en
+es
+47: The first statement creates a function as a global variable called main ( ) .
+
+47: La primera crea una función como variable global llamada main ( ) .
+
+en
+es
+48: This function does some work and also tells the browser to call itself next frame with window.requestAnimationFrame ( ) .
+
+48: Esta función hace algo de trabajo y también le dice al navegador que se llame a sí mismo al siguiente frame con window.requestAnimationFrame ( ) .
+
+en
+es
+49: The second statement calls the main ( ) function , defined in the first statement .
+
+49: La segunda sentencia llama a la función main ( ) , definida en la primera sentencia .
+
+en
+es
+50: Because main ( ) is called once in the second statement and every call of it places itself in the queue of things to do next frame , main ( ) is synchronized to your frame rate .
+
+50: Debido a que main ( ) es llamada una vez en la segunda sentencia y cada llamada se coloca en la cola de cosas a hacer en el siguiente frame , main ( ) está sincronizada con tu tasa de frames .
+
+en
+es
+51: Of course this loop is not perfect .
+
+51: Por supuesto , este bucle no es perfecto .
+
+en
+es
+52: Before we discuss ways to change it , let us discuss what it already does well .
+
+52: Antes de discutir formas de cambiarlo , vamos a discutir lo que ya hace bien .
+
+en
+es
+53: Timing the main loop to when the browser paints to the display allows you to run your loop as frequently as the browser wants to paint .
+
+53: Programar el bucle principal para cuando el navegador pinte en la pantalla te permite ejecutar tu bucle tan frecuentemente como el navegador quiera pintar .
+
+en
+es
+54: You are given control over each frame of animation .
+
+54: Tienes el control sobre cada cuadro de la animación .
+
+en
+es
+55: It is also very simple because main ( ) is the only function getting looped .
+
+55: También es muy simple porque main ( ) es la única función que se ejecuta en bucle .
+
+en
+es
+56: A First-Person Shooter ( or a similar game ) presents a new scene once every frame .
+
+56: Un juego de disparos en primera persona ( o un juego similar ) presenta una nueva escena una vez cada fotograma .
+
+en
+es
+57: You cannot really get more smooth and responsive than that .
+
+57: Realmente no se puede ser más suave y sensible que eso .
+
+en
+es
+58: But do not immediately assume animations require frame-by-frame control .
+
+58: Pero no asuma inmediatamente que las animaciones requieren un control fotograma a fotograma .
+
+en
+es
+59: Simple animations can be easily performed , even GPU-accelerated , with CSS animations and other tools included in the browser .
+
+59: Las animaciones sencillas pueden realizarse fácilmente , incluso aceleradas por GPU , con animaciones CSS y otras herramientas incluidas en el navegador .
+
+en
+es
+60: There are a lot of them and they will make your life easier .
+
+60: Hay muchas y te harán la vida más fácil .
+
+en
+es
+61: Building a better main loop in JavaScript
+
+61: Crear un bucle principal mejor en JavaScript
+
+en
+es
+62: There are two obvious issues with our previous main loop : main ( ) pollutes the { { domxref ( “ window ” ) } } object ( where all global variables are stored ) and the example code did not leave us with a way to stop the loop unless the whole tab is closed or refreshed .
+
+62: Hay dos problemas obvios con nuestro bucle principal anterior : main ( ) contamina el objeto { { domxref ( " window " ) } } ( donde se almacenan todas las variables globales ) y el código de ejemplo no nos deja una forma de detener el bucle a menos que se cierre o actualice toda la pestaña .
+
+en
+es
+63: For the first issue , if you want the main loop to just run and you do not need easy ( direct ) access to it , you could create it as an Immediately-Invoked Function Expression ( IIFE ) .
+
+63: Para el primer problema , si quieres que el bucle principal sólo se ejecute y no necesitas un acceso fácil ( directo ) a él , podrías crearlo como una Expresión de Función Inmediatamente Invocada ( IIFE ) .
+
+en
+es
+65: * Starting with the semicolon is in case whatever line of code above this example
+
+65: * Empezar con el punto y coma es en caso de que cualquier línea de código por encima
+
+en
+es
+66: * relied on automatic semicolon insertion ( ASI ) .
+
+66: * de este ejemplo se basó en la inserción automática de punto y coma ( ASI ) .
+
+en
+es
+67: The browser could accidentally
+
+67: El navegador
+
+en
+es
+68: * think this whole example continues from the previous line .
+
+68: * podría pensar accidentalmente que todo este ejemplo continúa desde la línea anterior .
+
+en
+es
+69: The leading semicolon
+
+69: * El punto y coma inicial marca el comienzo de nuestra nueva línea si la anterior no
+
+en
+es
+70: * marks the beginning of our new line if the previous one was not empty or terminated .
+
+70: * estaba vacía o terminada .
+
+en
+es
+75: / / Your main loop contents
+
+75: / / Contenido del bucle principal
+
+en
+es
+77: main ( ) ; / / Start the cycle
+
+77: main ( ) ; / / Inicio del ciclo
+
+en
+es
+79: When the browser comes across this IIFE , it will define your main loop and immediately queue it for the next frame .
+
+79: Cuando el navegador se encuentre con este IIFE , definirá tu bucle principal e inmediatamente lo pondrá en cola para el siguiente frame .
+
+en
+es
+80: It will not be attached to any object and main ( or main ( ) for methods ) will be a valid unused name in the rest of the application , free to be defined as something else .
+
+80: No se adjuntará a ningún objeto y main ( o main ( ) para métodos ) será un nombre válido sin usar en el resto de la aplicación , libre para ser definido como otra cosa .
+
+en
+es
+81: Note : In practice , it is more common to prevent the next requestAnimationFrame ( ) with an if-statement , rather than calling cancelAnimationFrame ( ) .
+
+81: Nota : En la práctica , es más común prevenir la siguiente requestAnimationFrame ( ) con una sentencia if , en lugar de llamar a cancelAnimationFrame ( ) .
+
+en
+es
+82: For the second issue , stopping the main loop , you will need to cancel the call to main ( ) with { { domxref ( “ window.cancelAnimationFrame ( ) ” ) } } .
+
+82: Para el segundo problema , detener el bucle principal , tendrá que cancelar la llamada a main ( ) con { { domxref ( " window.cancelAnimationFrame ( ) " ) } } .
+
+en
+es
+83: You will need to pass cancelAnimationFrame ( ) the ID token given by requestAnimationFrame ( ) when it was last called .
+
+83: Usted tendrá que pasar cancelAnimationFrame ( ) el ID token dado por requestAnimationFrame ( ) cuando fue llamado por última vez .
+
+en
+es
+84: Let us assume that your game ’ s functions and variables are built on a namespace that you called MyGame .
+
+84: Supongamos que las funciones y variables de tu juego están construidas sobre un espacio de nombres que has llamado MiJuego .
+
+en
+es
+85: Expanding our last example , the main loop would now look like :
+
+85: Ampliando nuestro último ejemplo , el bucle principal ahora se vería así :
+
+en
+es
+87: * Starting with the semicolon is in case whatever line of code above this example
+
+87: * Empezar con el punto y coma es en caso de que cualquier línea de código por encima
+
+en
+es
+88: * relied on automatic semicolon insertion ( ASI ) .
+
+88: * de este ejemplo se basó en la inserción automática de punto y coma ( ASI ) .
+
+en
+es
+89: The browser could accidentally
+
+89: El navegador
+
+en
+es
+90: * think this whole example continues from the previous line .
+
+90: * podría pensar accidentalmente que todo este ejemplo continúa desde la línea anterior .
+
+en
+es
+91: The leading semicolon
+
+91: * El punto y coma inicial marca el comienzo de nuestra nueva línea si la anterior no
+
+en
+es
+92: * marks the beginning of our new line if the previous one was not empty or terminated .
+
+92: * estaba vacía o terminada .
